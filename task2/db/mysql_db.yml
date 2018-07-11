@@ -1,0 +1,56 @@
+#while upload on the git create a folder for tasks put this main.yaml file
+
+
+- name: Install the MySQL packages
+   hosts: DB01
+   tasks: 
+   
+- name: Download MySQL Community Repo
+     get_url:
+     url: http://repo.mysql.com/mysql-community-release-el7-7.noarch.rpm
+     dest: /tmp
+     
+– name: Install MySQL Community Repo
+   command: /usr/bin/rpm -ivh /tmp/mysql-community-release-el7-7.noarch.rpm
+
+– name: Install MySQL Server
+   yum: 
+   name=mysql-server 
+   state=present
+
+– name: Install MySQL-python, this is required for the task remove anonymous user
+   yum: 
+   name=MySQL-python 
+   state=present
+
+– name: Start MySQL Server and enable it
+   service: 
+   name=mysqld
+   state=started 
+   enabled=yes
+     
+ - name: Start the MySQL service
+    service: name=mysqld 
+    state=started 
+    enabled=true
+    
+ - name: Update MySQL root password for all root accounts
+   mysql_user: name=root host={{ item }} password={{ mysql_root_pass }} state=present
+   with_items:
+     - "{{ servername of the linux server where ansible is installed }}"
+     - 127.0.0.1
+     - ::1
+     - localhost
+
+ - name: Copy the root credentials as .my.cnf file
+   template: src=root.cnf.j2 dest=~/.my.cnf mode=0600
+
+ - name: Ensure Anonymous user(s) are not in the database
+   mysql_user: name='' host={{ item }} state=absent
+   with_items:
+     - localhost
+     - "{{ ansible_hostname }}"
+
+- name: Ensure MySQL is started and enabled on boot.
+  service: "name={{ mysqld }} state=started enabled={{ mysql_enabled_on_startup }}"
+  register: mysql_service_configuration
