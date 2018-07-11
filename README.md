@@ -1,3 +1,6 @@
+Test task details
+
+
 1)Compose infrastructure code to create a three tier environment (EC2 instances: web, app, database) on AWS as follows:
  Set 3 subnets: name them "web", "app", "db" respectively.
  Create the web EC2 instance in the "web" subnet. Set the name tag to "WEB01".
