@@ -6,7 +6,9 @@ Usage
 To run this example execute the below commands as follows
 
 $ terraform init
+
 $ terraform plan
+
 $ terraform apply
 
 Note 
