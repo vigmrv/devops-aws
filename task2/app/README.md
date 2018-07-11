@@ -7,6 +7,6 @@ Usage
 To run this example execute the below commands as follows
 
 #ansible-playbook apache_tomcat.yml
-# ansible-playbook deploy_opencms.yml
-# ansible-playbook sshkeys.yml
+#ansible-playbook deploy_opencms.yml
+#ansible-playbook sshkeys.yml
 
